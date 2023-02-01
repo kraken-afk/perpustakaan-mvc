@@ -1,6 +1,6 @@
 <?php
 
-require_once '../app/global/init.php';
+require_once '../app/global/config.php';
 
 class HomeController extends Controller {
   const DIR = VIEWS . 'Home/';
