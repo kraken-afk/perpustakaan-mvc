@@ -1,0 +1,19 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*:focus {
+  outline: none;
+  background-color: transparent;
+}
+
+:root {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+p {
+  color: tomato;
+}
