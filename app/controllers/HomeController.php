@@ -7,7 +7,7 @@ class HomeController extends Controller {
 
   public function index(): void
   {
-    self::takeFile(self::DIR . 'style.css', './style.css');
+    self::takeFile(self::DIR . 'style.css', './assets/style.css');
     require_once self::DIR . 'index.php';
   }
 }

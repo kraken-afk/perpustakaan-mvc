@@ -6,7 +6,7 @@ class Controller implements ControllerInterface {
   public function takeFile(string $source, string $destination): void
   {
     $localStream = fopen($source, 'r');
-    $publicStream = fopen($destination, 'w') or fopen($destination, 'x');
+    $publicStream = fopen($destination, 'w');
 
     // empty the public file each request
     fwrite($publicStream, "");

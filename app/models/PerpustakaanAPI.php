@@ -79,20 +79,8 @@ class PerpustakaanAPI {
 
     try {
       $this->connection = new PDO($dns, $this->DB_USERNAME, $this->DB_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-      if ($this->connection) echo "DB Connected succesfully";
     } catch (PDOException $e) {
       throw new Exception($e->getMessage());
     }
   }
 }
-
-$db = new PerpustakaanAPI;
-$query =
-  <<<SQL
-  SELECT * FROM `tbl_user` WHERE `username` = :username AND `password` = :password;
-  SQL;
-
-$data = $db->getPrepareQuery($query, [':username' => 'Romeo', ':password' => md5('rahasia')]);
-
-var_dump($data);
