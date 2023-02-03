@@ -2,7 +2,10 @@
 
 namespace Perpustakaan\Router;
 
+use NotFoundController;
+
 require_once '../app/global/aliases.php';
+session_start();
 
 class Route {
   private static Array $routes = [];
@@ -12,12 +15,14 @@ class Route {
   self::$routes[$path] = ['path' => $path, 'controller' => $controller, 'function' => $function];
  }
 
- public static function run(): void
+ public static function run( ): void
  {
 
   define('PATH', $_SERVER['REQUEST_URI']);
 
-  if (!isset(self::$routes[PATH])) echo "Not Found";
+  if (PATH === '/logout' && isset($_SESSION['isLogin'])) self::logOutHandler();
+
+  if (!isset(self::$routes[PATH])) self::pageNotFoundHandler();
 
   ['path' => $path, 'controller' => $controller, 'function' => $function] = self::$routes[PATH];
 
@@ -25,5 +30,22 @@ class Route {
 
   $controller = new $controller;
   $controller->$function();
+ }
+
+ private static function pageNotFoundHandler(): void
+ {
+    require_once CONTROLLERS . 'NotFoundController.php';
+
+    $controller = new NotFoundController;
+    $controller->index();
+    exit;
+ }
+
+ private static function logOutHandler(): void
+ {
+   $session = session_destroy();
+
+   if ($session) header('Location:/');
+   exit;
  }
 }
