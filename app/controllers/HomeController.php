@@ -10,4 +10,10 @@ class HomeController extends Controller {
     self::takeFile(self::DIR . 'style.css', './assets/style.css');
     require_once self::DIR . 'index.php';
   }
+
+  public function mimeHandler(string $filename): void
+  {
+    header("Content-Type: text/css");
+    readfile(self::DIR . 'style.css');
+  }
 }

@@ -11,4 +11,10 @@ class LoginController extends Controller {
     require_once MODELS . 'PerpustakaanAPI.php';
     require_once self::DIR . 'index.php';
   }
+
+  public function mimeHandler(string $filename): void
+  {
+    header("Content-Type: text/css");
+    readfile(self::DIR . '/style.css');
+  }
 }

@@ -1,6 +1,6 @@
 <?php
 
-define('CONTROLLERS', '../app/controllers/');
-define('VIEWS', '../app/views/');
-define('MODELS', '../app/models/');
-define('LIB', '../app/lib/');
+const CONTROLLERS = '../app/controllers/';
+const VIEWS = '../app/views/';
+const MODELS = '../app/models/';
+const LIB = '../app/lib/';
