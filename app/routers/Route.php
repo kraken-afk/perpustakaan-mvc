@@ -2,83 +2,86 @@
 
 namespace Perpustakaan\Router;
 
-use Error;
 use Exception;
 use NotFoundController;
 
 require_once '../app/global/aliases.php';
 session_start();
 
-class Route {
-  private static Array $routes = [];
+class Route
+{
+  private static array $routes = [];
 
- public static function add(string $path, string $controller, string $function): void
- {
-  self::$routes[$path] = ['path' => $path, 'controller' => $controller, 'function' => $function];
- }
+  public static function add(string $path, string $controller, string $function): void
+  {
+    self::$routes[$path] = ['path' => $path, 'controller' => $controller, 'function' => $function];
+  }
 
- public static function run(): void
- {
+  public static function run(): void
+  {
 
-  define('PATH', $_SERVER['REQUEST_URI']);
+    define('PATH', $_SERVER['REQUEST_URI']);
 
-  if (preg_match("/\.\w+$/", PATH)) self::mimeRequestHandler();
+    if (preg_match("/\.\w+$/", PATH)) self::mimeRequestHandler();
 
-  if (PATH === '/logout' && isset($_SESSION['isLogin'])) self::logOutHandler();
+    if (PATH === '/logout' && isset($_SESSION['isLogin'])) self::logOutHandler();
 
-  if (!isset(self::$routes[PATH])) self::pageNotFoundHandler();
+    self::pageRequestHandler();
+  }
 
-  self::pageRequestHandler();
- }
+  private static function pageRequestHandler(?string $uri = PATH): void
+  {
+    $_SESSION['URI'] = PATH;
 
- private static function pageRequestHandler(?string $uri = PATH): void
- {
-  ['path' => $path, 'controller' => $controller, 'function' => $function] = self::$routes[$uri];
+    if (!isset(self::$routes[PATH])) self::pageNotFoundHandler();
 
-  require_once CONTROLLERS . $controller . '.php';
+    ['path' => $path, 'controller' => $controller, 'function' => $function] = self::$routes[$uri];
 
-  $controller = new $controller;
-  $controller->$function();
+    require_once CONTROLLERS . $controller . '.php';
 
-  $_SESSION['URI'] = PATH;
+    $controller = new $controller;
+    $controller->$function();
 
-  exit;
- }
+    exit;
+  }
 
- private static function pageNotFoundHandler(): void
- {
+  private static function pageNotFoundHandler(): void
+  {
     require_once CONTROLLERS . 'NotFoundController.php';
 
     $controller = new NotFoundController;
     $controller->index();
 
-    $_SESSION['URI'] = PATH;
+    exit;
+  }
+
+  private static function logOutHandler(): void
+  {
+    $session = session_destroy();
+
+    if ($session) header('Location:/');
 
     exit;
- }
+  }
 
- private static function logOutHandler(): void
- {
-   $session = session_destroy();
+  private static function mimeRequestHandler(): void
+  {
+    define('SUB_DIR', $_SESSION['URI']);
 
-   if ($session) header('Location:/');
+    ['controller' => $controller] = isset(self::$routes[SUB_DIR]) ? self::$routes[SUB_DIR] : ['controller' => 'NotFoundController'];
 
-   exit;
- }
+    require_once CONTROLLERS . $controller . '.php';
 
- private static function mimeRequestHandler(): void
- {
-  define('PATH_LIST', array_filter(preg_split('/\//', PATH), fn($var): string => $var));
-  define('MIME_TYPE', array_slice(PATH_LIST, -1, 1)[0]);
-  define('SUB_DIR', $_SESSION['URI']);
+    try
+    {
+      (new $controller)->mimeHandler($controller::DIR, PATH);
+    }
 
-  ['controller' => $controller] = isset(self::$routes[SUB_DIR]) ? self::$routes[SUB_DIR] : ['controller' => 'NotFoundController'];
+    catch (Exception $error)
+    {
+      self::pageRequestHandler();
+    }
 
-  require_once CONTROLLERS . $controller . '.php';
-
-  $controller = new $controller;
-  $controller->mimeHandler(MIME_TYPE);
-
-  exit;
- }
+    exit;
+  }
 }

@@ -2,6 +2,5 @@
 
 interface ControllerInterface {
   public function index(): void;
-  public function takeFile(string $source, string $destination): void;
-  public function mimeHandler(string $filename): void;
+  public function mimeHandler(string $dir, string $filename): void;
 }

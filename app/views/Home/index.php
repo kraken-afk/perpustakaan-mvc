@@ -12,7 +12,7 @@ if (!isset($_SESSION['isLogin'])) header('Location:/login');
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body>
@@ -29,6 +29,8 @@ if (!isset($_SESSION['isLogin'])) header('Location:/login');
       <a href="/logout" class="link-item">Logout</a>
     </div>
   </nav>
+
+  <script src="./js/script.js"></script>
 </body>
 
 </html>
