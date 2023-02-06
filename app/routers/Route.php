@@ -67,6 +67,9 @@ class Route
   private static function mimeRequestHandler(): void
   {
     define('SUB_DIR', $_SESSION['URI']);
+    define('FILENAME', array_slice(array_filter(explode('/', PATH), fn ($str): string => $str), -1, 1)[0]);
+
+    if (preg_match('/^\@.+/', FILENAME) && preg_match('/\.js$/', FILENAME)) self::webComponentRequestHandler();
 
     ['controller' => $controller] = isset(self::$routes[SUB_DIR]) ? self::$routes[SUB_DIR] : ['controller' => 'NotFoundController'];
 
@@ -81,6 +84,18 @@ class Route
     {
       self::pageRequestHandler();
     }
+
+    exit;
+  }
+
+  private static function webComponentRequestHandler(): void
+  {
+    define('COMPONENT_NAME', preg_replace('/^\//', '', str_replace('@', '', PATH)));
+
+    if (!file_exists(COMPONENTS . COMPONENT_NAME)) self::pageRequestHandler();
+
+    header('Content-Type: text/javascript');
+    readfile(COMPONENTS . COMPONENT_NAME);
 
     exit;
   }
