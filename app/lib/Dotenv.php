@@ -32,9 +32,9 @@ class Dotenv {
     }
   }
 
-  public function getenv(string $key): string
+  public function getenv(string $key): string | null
   {
-    return $this->env[$key] ?? '';
+    return $this->env[$key] ?? null;
   }
 
 }

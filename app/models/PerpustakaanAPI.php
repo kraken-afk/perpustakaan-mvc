@@ -40,7 +40,7 @@ class PerpustakaanAPI {
     $this->DB_NAME = $dotenv->getenv('DB_NAME');
   }
 
-  public function getPrepareQuery(string $preparedQuerys, Array $values): mixed
+  public function getPrepareQuery(string $preparedQuerys, Array $values): object | bool
   {
     $this->connect();
 
