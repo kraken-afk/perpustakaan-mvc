@@ -15,7 +15,8 @@ class NavBar extends HTMLElement {
     padding-inline: 1rem;
     justify-content: space-between;
 
-    position: static;
+    position: sticky;
+    top: 0;
     margin-bottom: 1rem;
   }
 
