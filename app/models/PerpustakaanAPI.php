@@ -12,6 +12,9 @@ use PDOException;
 use Perpustakaan\lib\Dotenv;
 
 class PerpustakaanAPI {
+  const FETCH_OBJECT = 1;
+  const FETCH_ARRAY_ASSOC = 2;
+
   private string $DB_HOST;
   private string $DB_PORT;
   private string $DB_USERNAME;
@@ -40,11 +43,13 @@ class PerpustakaanAPI {
     $this->DB_NAME = $dotenv->getenv('DB_NAME');
   }
 
-  public function getPrepareQuery(string $preparedQuerys, Array $values): object | bool
+  public function getPrepareQuery(string $preparedQuerys, ?Array $values = [], ?int $flag = 0): object | bool | array
   {
     $this->connect();
 
     $statement = $this->connection->prepare($preparedQuerys);
+
+    if (is_null($values)) $values = [];
 
     foreach ($values as $param => $argument) {
       $type = null;
@@ -59,15 +64,27 @@ class PerpustakaanAPI {
         case 'boolean':
           $type = PDO::PARAM_BOOL;
           break;
-        default: $type = PDO::PARAM_NULL;
+        default:
+          $type = PDO::PARAM_NULL;
       }
 
       $statement->bindValue($param, $argument, $type);
     }
 
+    a:
+
     $statement->execute();
 
-    $data = $statement->fetchObject();
+    switch ($flag) {
+      case 1:
+        $data = $statement->fetchAll(PDO::FETCH_OBJ);
+        break;
+      case 2:
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        break;
+      default: $statement->fetchObject();
+    }
+
     $this->connection = null;
 
     return $data;

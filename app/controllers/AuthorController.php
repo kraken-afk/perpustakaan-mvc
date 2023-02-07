@@ -2,12 +2,13 @@
 
 require_once '../app/global/config.php';
 
-class PenerbitController extends Controller
+class AuthorController extends Controller
 {
-  const DIR = VIEWS . 'Penerbit/';
+  const DIR = VIEWS . 'Author/';
 
   public function index(): void
   {
+    require_once MODELS . 'PerpustakaanAPI.php';
     require_once self::DIR . 'index.php';
   }
 }

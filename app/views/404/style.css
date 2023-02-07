@@ -34,4 +34,6 @@
   padding: .4rem .6rem;
   border-radius: 6px;
   color: #fff;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 2px;
 }

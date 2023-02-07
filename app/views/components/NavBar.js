@@ -130,12 +130,12 @@ class NavBar extends HTMLElement {
       </button>
       <div class="link-wrapper">
         <a href="/" class="link-item">Home</a>
-        <a href="/penerbit" class="link-item">Penerbit</a>
-        <a href="/buku" class="link-item">Buku</a>
+        <a href="/author" class="link-item">Author</a>
+        <a href="/books" class="link-item">Books</a>
         <a href="/pinjaman" class="link-item">Pinjaman</a>
-        <a href="/laporan" class="link-item">Laporan</a>
-        <a href="/anggota" class="link-item">Anggota</a>
-        <a href="/pengembalian" class="link-item">Pengembalian</a>
+        <a href="/report" class="link-item">Report</a>
+        <a href="/user" class="link-item">User</a>
+        <a href="/return" class="link-item">Return</a>
         <a href="/logout" class="link-item">Logout</a>
       </div>
     </nav>
